@@ -1,0 +1,23 @@
+- name: Install required dependencies
+  apt:
+    name:
+      - adduser
+      - libfontconfig1
+      - musl
+    state: present
+    update_cache: yes
+
+- name: Download Grafana
+  get_url:
+    url: https://dl.grafana.com/enterprise/release/grafana-enterprise_11.0.0_amd64.deb
+    dest: /tmp/grafana-enterprise_11.0.0_amd64.deb
+
+- name: Install Grafana
+  apt:
+    deb: /tmp/grafana-enterprise_11.0.0_amd64.deb
+
+- name: Ensure Grafana is enabled and started
+  systemd:
+    name: grafana-server
+    enabled: yes
+    state: started

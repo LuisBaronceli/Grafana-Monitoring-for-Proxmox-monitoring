@@ -1,0 +1,19 @@
+- name: Install InfluxDB and client
+  apt:
+    name:
+      - influxdb
+      - influxdb-client
+    state: present
+    update_cache: yes
+
+- name: Deploy InfluxDB configuration
+  template:
+    src: influxdb.conf.j2
+    dest: /etc/influxdb/influxdb.conf
+  notify: Restart InfluxDB
+
+- name: Ensure InfluxDB is enabled and started
+  systemd:
+    name: influxdb
+    enabled: yes
+    state: started
